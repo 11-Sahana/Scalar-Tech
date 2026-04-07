@@ -1,0 +1,101 @@
+name: supply-disruption-responder
+version: "1.0.0"
+description: >
+  An OpenEnv-compatible environment that simulates a supply chain disruption
+  scenario. A primary supplier has failed, threatening customer order fulfilment.
+  An AI agent must decide which orders to fulfil, delay, or cancel, and which
+  alternative supplier to engage — all under inventory, deadline, and budget
+  constraints.
+
+authors:
+  - name: "Supply Disruption Team"
+
+tags:
+  - supply-chain
+  - decision-making
+  - operations-research
+  - multi-objective-optimisation
+
+environment:
+  class: SupplyDisruptionEnv
+  module: app.env
+  max_steps: 5
+  observation_type: structured_json
+  action_type: structured_json
+  reward_type: dense_scalar
+
+action_schema:
+  type: object
+  properties:
+    fulfill_orders:
+      type: array
+      items: { type: string }
+      description: Order IDs to fulfil immediately
+    delay_orders:
+      type: array
+      items: { type: string }
+      description: Order IDs to push back
+    cancel_orders:
+      type: array
+      items: { type: string }
+      description: Order IDs to cancel
+    use_supplier:
+      type: string
+      description: Supplier ID to source additional inventory from
+    reasoning:
+      type: string
+      description: Optional free-text explanation
+
+tasks:
+  - id: easy
+    name: At-Risk Order Identification
+    difficulty: easy
+    description: >
+      Identify which customer orders are at risk of missing their deadlines
+      given the disruption and current inventory. Output a list of at-risk
+      order IDs sorted by urgency.
+    output_schema:
+      at_risk_order_ids: "List[str]"
+    grader: grade_easy
+    grader_module: app.grader
+
+  - id: medium
+    name: Supplier Ranking
+    difficulty: medium
+    description: >
+      Rank the non-disrupted alternative suppliers from best to worst for
+      sourcing the affected SKU. Consider reliability, cost, lead time, and
+      available quantity.
+    output_schema:
+      ranked_supplier_ids: "List[str]"
+      rationale: "str (optional)"
+    grader: grade_medium
+    grader_module: app.grader
+
+  - id: hard
+    name: Full Contingency Plan
+    difficulty: hard
+    description: >
+      Produce a complete contingency plan: which orders to fulfil, delay, or
+      cancel, and which supplier to engage. Maximise revenue from high-priority
+      orders while respecting the budget constraint and minimising delays.
+    output_schema:
+      fulfill_orders: "List[str]"
+      delay_orders:   "List[str]"
+      cancel_orders:  "List[str]"
+      use_supplier:   "str"
+      reasoning:      "str (optional)"
+    grader: grade_hard
+    grader_module: app.grader
+
+scoring:
+  method: weighted_average
+  weights:
+    easy:   0.2
+    medium: 0.3
+    hard:   0.5
+  range: [0.0, 1.0]
+
+reproducibility:
+  seed: 42
+  deterministic: true
