@@ -156,17 +156,32 @@ Priority weights: CRITICAL=4, HIGH=3, MEDIUM=2, LOW=1.
 
 ## 📊 Baseline Scores
 
-Evaluated with seed=42 using the reference (near-optimal) rule-based agent:
+Evaluated with `seed=42` using the reference rule-based agent (`docker run supply-env`):
 
-| Task    | Weight | Reference Score |
-|---------|--------|-----------------|
-| Easy    | 20 %   | 1.0000          |
-| Medium  | 30 %   | 1.0000          |
-| Hard    | 50 %   | ~0.95+          |
-| **Overall** | — | **~0.975**      |
+| Task        | Weight | Score  | Contribution |
+|-------------|--------|--------|--------------|
+| Easy        | 20 %   | 1.0000 | 0.2000       |
+| Medium      | 30 %   | 1.0000 | 0.3000       |
+| Hard        | 50 %   | 1.0000 | 0.5000       |
+| **Overall** |        |        | **1.0000**   |
 
-An imperfect agent (partial recall / reversed ranking / poor supplier) typically
-scores 0.40–0.60 on the hard task.
+**Scenario (seed=42):** Budget $16,792 · 120 units on hand · 8 orders · 4 active suppliers
+
+**Episode summary (rule-based agent, 1 step):**
+
+```
+Fulfil  : ORD-001 (critical), ORD-002 (critical), ORD-003 (high), ORD-004 (high), ORD-006 (medium)
+Delay   : ORD-005 (medium), ORD-007 (low), ORD-008 (low)
+Supplier: SUP-DELTA (97% reliability, 1-day lead time)
+
+Step reward     : +1837.39
+  Fulfillment   : +1808.13
+  Delay penalty :   -19.24
+  Supplier bonus:   +48.50
+Budget remaining: $15,433.15
+```
+
+An imperfect agent (reversed ranking / poor supplier choice) typically scores 0.40–0.65 on the hard task.
 
 ---
 

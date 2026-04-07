@@ -106,7 +106,8 @@ def main():
     print(f"Budget remaining : ${final['budget_remaining']:,.2f}")
     print("\nFinal Order Statuses:")
     for o in final["orders"]:
-        print(f"  {o['order_id']:8s}  {o['priority']:8s}  → {o['status']}")
+        status = o['status'].replace("OrderStatus.", "") if "OrderStatus." in str(o['status']) else o['status']
+        print(f"  {o['order_id']:8s}  {o['priority']:8s}  → {status}")
 
     print("\n(Run scripts/evaluate.py to get formal task scores.)")
 
