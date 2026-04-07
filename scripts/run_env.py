@@ -1,6 +1,6 @@
 """
 scripts/run_env.py
-──────────────────
+------------------
 Manually step through the Supply Disruption environment with a hard-coded
 rule-based policy.  Useful for sanity-checking the environment without
 needing an OpenAI API key.
@@ -11,7 +11,6 @@ Usage:
 
 from __future__ import annotations
 import argparse
-import json
 import sys
 import os
 
@@ -19,18 +18,11 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from app.env import SupplyDisruptionEnv
 from app.models import Action, OrderStatus
-from app.tasks import get_optimal_supplier_ranking, get_reference_contingency_plan
+from app.tasks import get_reference_contingency_plan
 from app.utils import setup_logging, compute_order_urgency_score
 
 
 def rule_based_action(obs) -> Action:
-    """
-    Simple deterministic policy:
-      1. Pick the best-ranked available supplier.
-      2. Sort pending orders by urgency.
-      3. Fulfil as many as inventory (+ procurement) allows.
-      4. Delay everything else.
-    """
     plan = get_reference_contingency_plan(obs)
     return Action(
         fulfill_orders=plan["fulfill_orders"],
@@ -51,7 +43,7 @@ def main():
     obs = env.reset()
 
     print("=" * 70)
-    print("  SUPPLY DISRUPTION RESPONDER  –  Manual Run")
+    print("  SUPPLY DISRUPTION RESPONDER  -  Manual Run")
     print("=" * 70)
     print(f"\nDisruption: {obs.disruption.description}")
     print(f"Budget    : ${obs.budget_remaining:,.2f}")
@@ -65,7 +57,7 @@ def main():
 
     print("\nAlternative Suppliers:")
     for s in obs.suppliers:
-        disrupted = " ← DISRUPTED" if s.is_primary else ""
+        disrupted = " <- DISRUPTED" if s.is_primary else ""
         print(f"  {s.supplier_id}  reliability={s.reliability:.0%}  "
               f"cost=${s.unit_cost:.2f}/u  lead={s.lead_time_days}d"
               f"  avail={s.available_qty}{disrupted}")
@@ -74,7 +66,7 @@ def main():
     step = 0
     while not obs.done:
         action = rule_based_action(obs)
-        print(f"\n── Step {step + 1} Action ──────────────────────")
+        print(f"\n-- Step {step + 1} Action ----------------------")
         print(f"  Fulfil  : {action.fulfill_orders}")
         print(f"  Delay   : {action.delay_orders}")
         print(f"  Cancel  : {action.cancel_orders}")
@@ -92,7 +84,7 @@ def main():
         print(f"  Supplier bonus: {reward.breakdown.supplier_bonus:+.3f}")
 
         if info.get("warnings"):
-            print(f"  ⚠  Warnings  : {info['warnings']}")
+            print(f"  Warnings: {info['warnings']}")
 
         if done:
             break
@@ -106,8 +98,8 @@ def main():
     print(f"Budget remaining : ${final['budget_remaining']:,.2f}")
     print("\nFinal Order Statuses:")
     for o in final["orders"]:
-        status = o['status'].replace("OrderStatus.", "") if "OrderStatus." in str(o['status']) else o['status']
-        print(f"  {o['order_id']:8s}  {o['priority']:8s}  → {status}")
+        status = o["status"].replace("OrderStatus.", "") if "OrderStatus." in str(o["status"]) else o["status"]
+        print(f"  {o['order_id']:8s}  {o['priority']:8s}  -> {status}")
 
     print("\n(Run scripts/evaluate.py to get formal task scores.)")
 
