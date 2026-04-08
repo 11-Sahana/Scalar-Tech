@@ -73,7 +73,7 @@ def generate_scenario(seed: int = 42) -> Dict[str, Any]:
         )
     }
 
-    # Customer orders – mix of priorities
+    # Customer orders - mix of priorities
     order_templates = [
         ("ORD-001", "MegaRetail Corp",    OrderPriority.CRITICAL, rng.randint(40, 60),  2,  rng.uniform(18000, 22000)),
         ("ORD-002", "GovHealth Supply",   OrderPriority.CRITICAL, rng.randint(25, 35),  3,  rng.uniform(12000, 16000)),
@@ -187,6 +187,6 @@ def supplier_score(supplier: Supplier) -> float:
 def setup_logging(level: int = logging.INFO) -> None:
     logging.basicConfig(
         level=level,
-        format="%(asctime)s [%(levelname)s] %(name)s – %(message)s",
+        format="%(asctime)s [%(levelname)s] %(name)s - %(message)s",
         datefmt="%H:%M:%S",
     )

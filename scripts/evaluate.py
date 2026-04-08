@@ -1,6 +1,6 @@
 """
 scripts/evaluate.py
-────────────────────
+--------------------
 Evaluate the Supply Disruption environment across all three tasks using
 a deterministic rule-based submission.  Prints per-task scores and a
 weighted overall score.

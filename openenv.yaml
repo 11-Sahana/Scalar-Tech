@@ -1,0 +1,16 @@
+name: supply-disruption-env
+version: "1.0.0"
+description: >
+  OpenEnv supply chain disruption RL environment. A primary supplier has
+  failed and an AI agent must decide which orders to fulfil, delay, or cancel
+  and which alternative supplier to engage — under inventory, deadline, and
+  budget constraints.
+
+tags:
+  - supply-chain
+  - decision-making
+  - operations-research
+
+environment:
+  module: server.app
+  app: app

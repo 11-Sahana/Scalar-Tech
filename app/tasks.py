@@ -2,9 +2,9 @@
 Task definitions for the Supply Disruption Responder.
 
 Three tasks of increasing difficulty:
-  EASY   – Identify at-risk orders
-  MEDIUM – Rank alternative suppliers
-  HARD   – Produce a full contingency plan
+  EASY   - Identify at-risk orders
+  MEDIUM - Rank alternative suppliers
+  HARD   - Produce a full contingency plan
 """
 
 from __future__ import annotations

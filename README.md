@@ -1,4 +1,4 @@
-# Supply Disruption Responder 🚚⚡
+# Supply Disruption Responder
 
 An **OpenEnv-compatible** environment that places an AI agent at the centre of
 a real-world supply chain crisis.  A primary manufacturer has unexpectedly
