@@ -20,8 +20,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy project files
 COPY app/       app/
 COPY agent/     agent/
-COPY configs/   configs/
 COPY scripts/   scripts/
+COPY inference.py .
 
 # Default command: run the full evaluation (no API key required)
 CMD ["python", "scripts/evaluate.py", "--verbose"]

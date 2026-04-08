@@ -141,5 +141,4 @@ class Reward(BaseModel):
     step:      int
     value:     float
     breakdown: RewardBreakdown
-    info:      Dict[str, Any] = Field(default_factory=dict)</content>
-<parameter name="filePath">c:\supply-disruption-env\supply-disruption-env\models.py
+    info:      Dict[str, Any] = Field(default_factory=dict)
