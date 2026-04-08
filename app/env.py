@@ -40,9 +40,14 @@ class SupplyDisruptionEnv:
     # Construction
     # ------------------------------------------------------------------
 
+<<<<<<< HEAD
     def __init__(self, seed: int = 42, scenario_override=None):
         self.seed = seed
         self.scenario_override = scenario_override
+=======
+    def __init__(self, seed: int = 42):
+        self.seed = seed
+>>>>>>> 8ca26c81667976b6b25f42c2d0d5d719f61369cb
         self._scenario: Dict[str, Any] = {}
         self._step_count: int = 0
         self._orders: Dict[str, CustomerOrder] = {}
@@ -57,11 +62,15 @@ class SupplyDisruptionEnv:
 
     def reset(self) -> Observation:
         """Initialise (or re-initialise) the environment and return the first observation."""
+<<<<<<< HEAD
         #self._scenario = generate_scenario(self.seed)
         if self.scenario_override:
             self._scenario = self.scenario_override
         else:
             self._scenario = generate_scenario(self.seed)
+=======
+        self._scenario = generate_scenario(self.seed)
+>>>>>>> 8ca26c81667976b6b25f42c2d0d5d719f61369cb
         self._step_count = 0
         self._cumulative_reward = 0.0
         self._history = []
