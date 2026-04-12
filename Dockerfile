@@ -22,6 +22,7 @@ COPY app/       app/
 COPY agent/     agent/
 COPY scripts/   scripts/
 COPY inference.py .
+COPY openenv.yaml . 
 
 # Default command: run the full evaluation (no API key required)
 CMD ["python", "scripts/evaluate.py", "--verbose"]
