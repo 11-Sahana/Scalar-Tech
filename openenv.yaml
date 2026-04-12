@@ -6,27 +6,79 @@ description: >
   and which alternative supplier to engage — under inventory, deadline, and
   budget constraints.
 
+author: "Prerana C's team"
+
 tags:
   - supply-chain
   - decision-making
   - operations-research
 
+tasks:
+  - id: easy
+    description: "Identify which customer orders are at risk given current inventory levels"
+    difficulty: easy
+    max_attempts: 5
+    scoring: "0.0–1.0 F1 score"
+
+  - id: medium
+    description: "Rank alternative suppliers from best to worst by composite score"
+    difficulty: medium
+    max_attempts: 5
+    scoring: "0.0–1.0 Spearman rank correlation"
+
+  - id: hard
+    description: "Produce a full contingency plan: which orders to fulfill, delay, or cancel and which supplier to use"
+    difficulty: hard
+    max_attempts: 5
+    scoring: "0.0–1.0 weighted composite"
+
+observation_space:
+  step: "int — current step number"
+  budget_remaining: "float — remaining procurement budget"
+  inventory: "dict — SKU to inventory levels"
+  orders: "list — customer orders with priority, quantity, deadline"
+  suppliers: "list — available suppliers with cost, lead time, reliability"
+  disruption: "dict — disruption event details"
+  metrics: "dict — episode metrics"
+  done: "bool — whether episode is complete"
+
+action_space:
+  fulfill_orders: "List[str] (required) — order IDs to fulfill now"
+  delay_orders: "List[str] (required) — order IDs to delay"
+  cancel_orders: "List[str] (required) — order IDs to cancel"
+  use_supplier: "str (required) — supplier ID to source from"
+  reasoning: "str (optional) — brief explanation"
+
+reward:
+  type: continuous
+  range: [0.0, 1.0]
+
+endpoints:
+  - path: /reset
+    method: POST
+    description: Start a new episode
+  - path: /step
+    method: POST
+    description: Submit an action
+  - path: /state
+    method: GET
+    description: Get current episode state
+  - path: /tasks
+    method: GET
+    description: List all tasks with graders
+  - path: /grader
+    method: POST
+    description: Grade a submission without running a full episode
+  - path: /health
+    method: GET
+    description: Health check
+
 environment:
   module: server.app
   app: app
 
-tasks:
-  - id: easy
-    name: At-Risk Order Identification
-    difficulty: easy
-    grader: app.grader.grade_easy
-
-  - id: medium
-    name: Supplier Ranking
-    difficulty: medium
-    grader: app.grader.grade_medium
-
-  - id: hard
-    name: Full Contingency Plan
-    difficulty: hard
-    grader: app.grader.grade_hard
+runtime:
+  framework: FastAPI + OpenEnv
+  python: "3.11"
+  docker: true
+  hf_spaces: true
