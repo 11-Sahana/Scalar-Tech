@@ -17,22 +17,16 @@ environment:
 
 tasks:
   - id: easy
-    description: >
-      Given the disruption event and current inventory levels, identify which
-      customer orders are at risk of not being fulfilled on time.
+    name: At-Risk Order Identification
+    difficulty: easy
     grader: app.grader.grade_easy
-    max_steps: 10
 
   - id: medium
-    description: >
-      Given the alternative suppliers and the total units required, rank the
-      non-disrupted suppliers from best to worst choice.
+    name: Supplier Ranking
+    difficulty: medium
     grader: app.grader.grade_medium
-    max_steps: 15
 
   - id: hard
-    description: >
-      Produce a complete contingency plan specifying which orders to fulfil,
-      delay, or cancel, and which supplier to engage.
+    name: Full Contingency Plan
+    difficulty: hard
     grader: app.grader.grade_hard
-    max_steps: 20
